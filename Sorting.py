@@ -1,50 +1,38 @@
 import random;
+import copy;
+
+from BubbleSort import BubbleSort
+from InsersionSort import InsersionSort
 
 def generateFakeData(n):
     fakeData = list(range(n));
     random.shuffle(fakeData);
     return fakeData;
 
-class BubbleSort:
-    def BubbleSort(unsorted):
-        for sortPath in range(len(unsorted) - 1):
-            for index in range(len(unsorted) - 1):
-                if unsorted[index] > unsorted[index + 1]:
-                    temp = unsorted[index];
-                    unsorted[index] = unsorted[index + 1];
-                    unsorted[index + 1] = temp;
-        return unsorted;
+def RunAndLogBubbleSort():
+    trial = generateFakeData(100);
+    trialCopy = copy.copy(trial);
+    steps = BubbleSort.BubbleSort(trialCopy);
 
-    def BubbleSortRecursive(unsorted, changed=False):
-        for index in range(len(unsorted) - 1):
-            if unsorted[index] > unsorted[index + 1]:
-                temp = unsorted[index];
-                unsorted[index] = unsorted[index + 1];
-                unsorted[index + 1] = temp;
-                changed = True;
-        
-        if changed == False:
-            return unsorted;
-        return BubbleSort.BubbleSortRecursive(unsorted, False);
+    with open("./BubbleSortSteps.txt", "w+") as fileWriter:
+        fileWriter.write("\n".join([f"Starting Data:\n{str(trial)}\n", "Steps:"] + steps + [f"\nResulting Data:\n{str(trialCopy)}"]));
 
-class InsersionSort:
-    def InsersionSort(unsorted):
-        for index in range(len(unsorted) - 1):
-            if unsorted[index] > unsorted[index + 1]:
-                temp = unsorted[index];
-                unsorted[index] = unsorted[index + 1];
-                unsorted[index + 1] = temp;
+def RunAndLogBubbleSortRecursive():
+    trial = generateFakeData(100);
+    trialCopy = copy.copy(trial);
+    steps = BubbleSort.BubbleSortRecursive(trialCopy);
 
-                for index2 in range(index):
-                    if unsorted[index2] > unsorted[index]:
-                        temp = unsorted[index2];
-                        unsorted[index2] = unsorted[index];
-                        unsorted[index] = temp;
-        return unsorted;
+    with open("./BubbleSortRecursiveSteps.txt", "w+") as fileWriter:
+        fileWriter.write("\n".join([f"Starting Data:\n{str(trial)}\n", "Steps:"] + steps + [f"\nResulting Data:\n{str(trialCopy)}"]));
 
-trial1 = generateFakeData(100);
+def RunAndLogInsersionSort():
+    trial = generateFakeData(100);
+    trialCopy = copy.copy(trial);
+    steps = InsersionSort.InsersionSort(trialCopy);
 
-print(trial1);
-print(InsersionSort.InsersionSortRecursive(trial1))
+    with open("./InsersionSortSteps.txt", "w+") as fileWriter:
+        fileWriter.write("\n".join([f"Starting Data:\n{str(trial)}\n", "Steps:"] + steps + [f"\nResulting Data:\n{str(trialCopy)}"]));
 
-
+RunAndLogBubbleSort()
+RunAndLogBubbleSortRecursive()
+RunAndLogInsersionSort()
